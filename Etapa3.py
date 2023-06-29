@@ -173,3 +173,17 @@ CORS(app)
 
 carrito = Carrito()         # Instanciamos un carrito
 inventario = Inventario()   # Instanciamos un inventario
+
+# 2 - Ruta para obtener los datos de un producto según su código
+# GET: envía la información haciéndola visible en la URL de la página web.
+@app.route('/productos/<int:codigo>', methods=['GET'])
+def obtener_producto(codigo):
+    producto = inventario.consultar_producto(codigo)
+    if producto:
+        return jsonify({
+            'codigo': producto.codigo,
+            'descripcion': producto.descripcion,
+            'cantidad': producto.cantidad,
+            'precio': producto.precio
+        }), 200
+    return jsonify({'message': 'Producto no encontrado.'}), 404
