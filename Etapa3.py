@@ -217,3 +217,11 @@ def modificar_producto(codigo):
 @app.route('/productos/<int:codigo>', methods=['DELETE'])
 def eliminar_producto(codigo):
     return inventario.eliminar_producto(codigo)
+
+# 7 - Ruta para agregar un producto al carrito
+@app.route('/carrito', methods=['POST'])
+def agregar_carrito():
+    codigo = request.json.get('codigo')
+    cantidad = request.json.get('cantidad')
+    inventario = Inventario()
+    return carrito.agregar(codigo, cantidad, inventario)
