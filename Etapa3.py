@@ -238,3 +238,8 @@ def quitar_carrito():
 @app.route('/carrito', methods=['GET'])
 def obtener_carrito():
     return carrito.mostrar()
+
+# 10 - Ruta para obtener el index
+@app.route('/')
+def index():
+    return 'API de Inventario'
