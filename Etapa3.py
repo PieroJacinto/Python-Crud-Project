@@ -202,3 +202,12 @@ def agregar_producto():
     cantidad = request.json.get('cantidad')
     precio = request.json.get('precio')
     return inventario.agregar_producto(codigo, descripcion, cantidad, precio)
+
+# 5 - Ruta para modificar un producto del inventario
+# PUT: permite actualizar información.
+@app.route('/productos/<int:codigo>', methods=['PUT'])
+def modificar_producto(codigo):
+    nueva_descripcion = request.json.get('descripcion')
+    nueva_cantidad = request.json.get('cantidad')
+    nuevo_precio = request.json.get('precio')
+    return inventario.modificar_producto(codigo, nueva_descripcion, nueva_cantidad, nuevo_precio)
