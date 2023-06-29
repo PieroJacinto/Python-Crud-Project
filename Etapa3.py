@@ -211,3 +211,9 @@ def modificar_producto(codigo):
     nueva_cantidad = request.json.get('cantidad')
     nuevo_precio = request.json.get('precio')
     return inventario.modificar_producto(codigo, nueva_descripcion, nueva_cantidad, nuevo_precio)
+
+# 6 - Ruta para eliminar un producto del inventario
+# DELETE: permite eliminar información.
+@app.route('/productos/<int:codigo>', methods=['DELETE'])
+def eliminar_producto(codigo):
+    return inventario.eliminar_producto(codigo)
