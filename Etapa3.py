@@ -187,3 +187,8 @@ def obtener_producto(codigo):
             'precio': producto.precio
         }), 200
     return jsonify({'message': 'Producto no encontrado.'}), 404
+
+# 3 - Ruta para obtener la lista de productos del inventario
+@app.route('/productos', methods=['GET'])
+def obtener_productos():
+    return inventario.listar_productos()
