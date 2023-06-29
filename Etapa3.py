@@ -192,3 +192,13 @@ def obtener_producto(codigo):
 @app.route('/productos', methods=['GET'])
 def obtener_productos():
     return inventario.listar_productos()
+
+# 4 - Ruta para agregar un producto al inventario
+# POST: envía la información ocultándola del usuario.
+@app.route('/productos', methods=['POST'])
+def agregar_producto():
+    codigo = request.json.get('codigo')
+    descripcion = request.json.get('descripcion')
+    cantidad = request.json.get('cantidad')
+    precio = request.json.get('precio')
+    return inventario.agregar_producto(codigo, descripcion, cantidad, precio)
