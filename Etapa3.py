@@ -233,3 +233,8 @@ def quitar_carrito():
     cantidad = request.json.get('cantidad')
     inventario = Inventario()
     return carrito.quitar(codigo, cantidad, inventario)
+
+# 9 - Ruta para obtener el contenido del carrito
+@app.route('/carrito', methods=['GET'])
+def obtener_carrito():
+    return carrito.mostrar()
