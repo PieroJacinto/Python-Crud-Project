@@ -225,3 +225,11 @@ def agregar_carrito():
     cantidad = request.json.get('cantidad')
     inventario = Inventario()
     return carrito.agregar(codigo, cantidad, inventario)
+
+# 8 - Ruta para quitar un producto del carrito
+@app.route('/carrito', methods=['DELETE'])
+def quitar_carrito():
+    codigo = request.json.get('codigo')
+    cantidad = request.json.get('cantidad')
+    inventario = Inventario()
+    return carrito.quitar(codigo, cantidad, inventario)
