@@ -162,3 +162,14 @@ class Carrito:
                         'precio': item.precio}
             productos_carrito.append(producto)
         return jsonify(productos_carrito), 200
+
+# -------------------------------------------------------------------
+# Configuración y rutas de la API Flask
+# -------------------------------------------------------------------
+#1)	Importación de los módulos y creación de la aplicación Flask
+
+app = Flask(__name__)
+CORS(app)
+
+carrito = Carrito()         # Instanciamos un carrito
+inventario = Inventario()   # Instanciamos un inventario
