@@ -35,3 +35,79 @@ def create_database():
 # Programa principal
 # Crear la base de datos y la tabla Productos si no existen
 create_database()
+
+# -------------------------------------------------------------------
+# Definimos la clase "Producto"
+# -------------------------------------------------------------------
+class Producto:
+    # Definimos el constructor e inicializamos los atributos de instancia
+    def __init__(self, codigo, descripcion, cantidad, precio):
+        self.codigo = codigo           # Código 
+        self.descripcion = descripcion # Descripción
+        self.cantidad = cantidad       # Cantidad disponible (stock)
+        self.precio = precio           # Precio 
+
+    # Este método permite modificar un producto.
+    def modificar(self, nueva_descripcion, nueva_cantidad, nuevo_precio):
+        self.descripcion = nueva_descripcion  # Modifica la descripción
+        self.cantidad = nueva_cantidad        # Modifica la cantidad
+        self.precio = nuevo_precio            # Modifica el precio
+
+
+# -------------------------------------------------------------------
+# Definimos la clase "Inventario"
+# -------------------------------------------------------------------
+class Inventario:
+    def __init__(self):
+        self.conexion = get_db_connection()
+        self.cursor = self.conexion.cursor()
+
+    def agregar_producto(self, codigo, descripcion, cantidad, precio):
+        producto_existente = self.consultar_producto(codigo)
+        if producto_existente:
+            print("Ya existe un producto con ese código.")
+            return False
+        nuevo_producto = Producto(codigo, descripcion, cantidad, precio)
+        sql = f'INSERT INTO productos VALUES ({codigo}, "{descripcion}", {cantidad}, {precio});'
+        self.cursor.execute(sql)
+        self.conexion.commit()
+        return True
+
+    def consultar_producto(self, codigo):
+        sql = f'SELECT * FROM productos WHERE codigo = {codigo};'
+        self.cursor.execute(sql)
+        row = self.cursor.fetchone()
+        if row:
+            codigo, descripcion, cantidad, precio = row
+            return Producto(codigo, descripcion, cantidad, precio)
+        return False
+
+    def modificar_producto(self, codigo, nueva_descripcion, nueva_cantidad, nuevo_precio):
+        producto = self.consultar_producto(codigo)
+        if producto:
+            producto.modificar(nueva_descripcion, nueva_cantidad, nuevo_precio)
+            sql = f'UPDATE productos SET descripcion = "{nueva_descripcion}", cantidad = {nueva_cantidad}, precio = {nuevo_precio} WHERE codigo = {codigo};' 
+            print("-"*50)
+            print(f'Producto modificado:\nCódigo: {producto.codigo}\nDescripción: {producto.descripcion}\nCantidad: {producto.cantidad}\nPrecio: {producto.precio}')
+            self.cursor.execute(sql)
+            self.conexion.commit()
+
+    def eliminar_producto(self, codigo):
+        sql = f'DELETE FROM productos WHERE codigo = {codigo};' 
+        self.cursor.execute(sql)
+        if self.cursor.rowcount > 0:
+            print(f'Producto {codigo} eliminado.')
+            self.conexion.commit()
+        else:
+            print(f'Producto {codigo} no encontrado.')
+
+    def listar_productos(self):
+        print("-"*50)
+        print("INVENTARIO - Lista de productos:")
+        print("Código\tDescripción\tCant\tPrecio")
+        self.cursor.execute("SELECT * FROM productos")
+        rows = self.cursor.fetchall()
+        for row in rows:
+            codigo, descripcion, cantidad, precio = row
+            print(f'{codigo}\t{descripcion}\t{cantidad}\t{precio}')
+        print("-"*50)
