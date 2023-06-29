@@ -111,3 +111,60 @@ class Inventario:
             codigo, descripcion, cantidad, precio = row
             print(f'{codigo}\t{descripcion}\t{cantidad}\t{precio}')
         print("-"*50)
+
+# -------------------------------------------------------------------
+# Definimos la clase "Carrito"
+# -------------------------------------------------------------------
+class Carrito:
+    def __init__(self):
+        self.conexion = sqlite3.connect('inventario.db')  # Conexión a la BD
+        self.cursor = self.conexion.cursor()
+        self.items = []
+
+    def agregar(self, codigo, cantidad, inventario):
+        producto = inventario.consultar_producto(codigo)
+        if producto is False:
+            print("El producto no existe.")
+            return False
+        if producto.cantidad < cantidad:
+            print("Cantidad en stock insuficiente.")
+            return False
+
+        for item in self.items:
+            if item.codigo == codigo:
+                item.cantidad += cantidad
+                sql = f'UPDATE productos SET cantidad = cantidad - {cantidad}  WHERE codigo = {codigo};'
+                self.cursor.execute(sql)
+                self.conexion.commit()
+                return True
+
+        nuevo_item = Producto(codigo, producto.descripcion, cantidad, producto.precio)
+        self.items.append(nuevo_item)
+        sql = f'UPDATE productos SET cantidad = cantidad - {cantidad}  WHERE codigo = {codigo};'
+        self.cursor.execute(sql)
+        self.conexion.commit()
+        return True
+
+    def quitar(self, codigo, cantidad, inventario):
+        for item in self.items:
+            if item.codigo == codigo:
+                if cantidad > item.cantidad:
+                    print("Cantidad a quitar mayor a la cantidad en el carrito.")
+                    return False
+                item.cantidad -= cantidad
+                print(f'Se ha/n eliminado {cantidad} ítem/s del producto {codigo} en el carrito.')
+                if item.cantidad == 0:
+                    self.items.remove(item)
+                    print(f'Producto {codigo} eliminado del carrito.')
+                sql = f'UPDATE productos SET cantidad = cantidad + {cantidad} WHERE codigo = {codigo};'
+                self.cursor.execute(sql)
+                self.conexion.commit()
+                return True
+    
+    def mostrar(self):
+        print("-"*50)
+        print("CARRITO - Lista de productos:")
+        print("Código\tDescripción\tCant\tPrecio")
+        for item in self.items:
+            print(f'{item.codigo}\t{item.descripcion}\t{item.cantidad}\t{item.precio}')
+        print("-"*50)
