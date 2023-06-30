@@ -13,7 +13,7 @@
     <h1>Agregar Productos al Inventario</h1>
     <div class="img"><img src="img/logo_codo.png" alt="codoacodo" width="100px"></div>
     <h3>Codo a Codo 2023</h3>
-    <form id="formulario">
+    <form id="formulario"  action="/productos"  method="POST" enctype="multipart/form-data">
         <label for="codigo">Código:</label>
         <input type="text" id="codigo" name="codigo" required><br>
 
@@ -28,6 +28,9 @@
 
         <label for="precio">Precio:</label>
         <input type="number" step="0.01" id="precio" name="precio" required><br>
+
+        <label for="imagen">Imagen:</label>
+        <input type="file" name= "imagen" id="imagen">                   
 
         <button type="submit">Agregar Producto</button>
         <a href="index.html">Menu principal</a>
