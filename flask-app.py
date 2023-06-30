@@ -84,7 +84,7 @@ class Inventario:
             return Producto(codigo, plataforma, descripcion, cantidad, precio)
         return None
 
-    def modificar_producto(self, codigo, nueva_plataforma,  nueva_descripcion, nueva_cantidad, nuevo_precio):
+    def modificar_producto(self, codigo, nueva_plataforma, nueva_descripcion, nueva_cantidad, nuevo_precio):
         producto = self.consultar_producto(codigo)
         if producto:
             producto.modificar(nueva_plataforma, nueva_descripcion, nueva_cantidad, nuevo_precio)
@@ -99,8 +99,8 @@ class Inventario:
         rows = self.cursor.fetchall()
         productos = []
         for row in rows:
-            codigo, descripcion, cantidad, precio = row
-            producto = {'codigo': codigo,'plataforma': plataforma, 'descripcion': descripcion, 'cantidad': cantidad, 'precio': precio}
+            codigo, plataforma, descripcion, cantidad, precio = row
+            producto = {'codigo': codigo, 'plataforma': plataforma, 'descripcion': descripcion, 'cantidad': cantidad, 'precio': precio}
             productos.append(producto)
         return jsonify(productos), 200
 
@@ -136,7 +136,7 @@ class Carrito:
                 self.conexion.commit()
                 return jsonify({'message': 'Producto agregado al carrito correctamente.'}), 200
 
-        nuevo_item = Producto(codigo, producto.descripcion, cantidad, producto.precio)
+        nuevo_item = Producto(codigo, producto.plataforma, producto.descripcion, cantidad, producto.precio)
         self.items.append(nuevo_item)
         self.cursor.execute("UPDATE productos SET cantidad = cantidad - ? WHERE codigo = ?",
                             (cantidad, codigo))

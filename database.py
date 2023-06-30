@@ -1,7 +1,7 @@
 import sqlite3
 
 # Configurar la conexión a la base de datos SQLite
-DATABASE = 'inventario.db'
+DATABASE = 'inventario2.db'
 
 def get_db_connection():
     print("Obteniendo conexión...") # Para probar que se ejecuta la función
@@ -46,9 +46,9 @@ class Producto:
     def __init__(self, codigo, plataforma, descripcion, cantidad, precio):
         self.codigo = codigo  
         self.plataforma = plataforma         
-        self.descripcion = descripcion # Descripción
-        self.cantidad = cantidad       # Cantidad disponible (stock)
-        self.precio = precio           # Precio 
+        self.descripcion = descripcion
+        self.cantidad = cantidad       
+        self.precio = precio           
 
     # Este método permite modificar un producto.
     def modificar(self, nueva_plataforma, nueva_descripcion, nueva_cantidad, nuevo_precio):
