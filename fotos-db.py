@@ -1,7 +1,7 @@
 import sqlite3
 
 # Configurar la conexión a la base de datos SQLite
-DATABASE = 'fotos.db'
+DATABASE = 'fotos2.db'
 
 def get_db_connection():
     print("Obteniendo conexión...") # Para probar que se ejecuta la función
@@ -21,7 +21,7 @@ def create_table():
             descripcion TEXT NOT NULL,
             cantidad INTEGER NOT NULL,
             precio REAL NOT NULL,
-            foto TEXT NOT NULL
+            foto TEXT
         ) ''')
     conn.commit()
     cursor.close()

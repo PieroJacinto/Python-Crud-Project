@@ -46,6 +46,9 @@
             <label class="modif-label" for="precioModificar">Precio:</label>
             <input type="number" step="0.01" id="precioModificar" name="precioModificar" required><br>
 
+            <label class="modif-label" for="fotoModificar">Foto:</label>
+            <input type="number" step="0.01" id="fotoModificar" name="fotoModificar" required><br>
+
             <button type="submit">Guardar Cambios</button>
             <a class="btn-grad" href="modificaciones.html">Cancelar</a>
         </form>
@@ -110,7 +113,8 @@
                     document.getElementById('descripcionModificar').value = data.descripcion;
                     document.getElementById('cantidadModificar').value = data.cantidad;
                     document.getElementById('precioModificar').value = data.precio;
-
+                    document.getElementById('fotoModificar').value = data.foto;
+                    
                     // Mostramos el formulario de modificación y ocultamos el formulario de consulta
                     document.getElementById('formulario').style.display = 'none';
                     document.getElementById('datosProducto').style.display = 'block';
@@ -131,6 +135,7 @@
             var descripcion = document.getElementById('descripcionModificar').value;
             var cantidad = document.getElementById('cantidadModificar').value;
             var precio = document.getElementById('precioModificar').value;
+            var foto = document.getElementById('fotoModificar').value;
 
             // Creamos un objeto con los datos del producto actualizados
             var producto = {
@@ -138,7 +143,8 @@
                 plataforma: plataforma,
                 descripcion: descripcion,
                 cantidad: cantidad,
-                precio: precio
+                precio: precio,
+                foto: foto
             };
 
             // Realizamos la solicitud PUT al servidor para guardar los cambios
