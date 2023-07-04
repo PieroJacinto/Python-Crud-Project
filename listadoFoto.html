@@ -20,31 +20,29 @@
         <h1 class="titulo">TPO FINAL</h1> 
         <img src="img/logo_codo.png" alt="codoacodo" width="100px">
     </div>
-    <h1 class="slogan">Listado de Productos</h1>    
-    
-    <div class="contenedor-tarjetas" >
-        <div class="tarjetas"  >
-            <div class="tarjeta product-card" v-for="producto in productos">
-                <div class="contenido-tarjeta" >
-                    <div><span class="codigo">Codigo: </span>{{producto.codigo}} </div>
-                    <div><span class="codigo">Plataforma: </span > {{producto.plataforma.toUpperCase()}} </div>
-                    <div><span class="Descripción">Título: </span >{{producto.descripcion.toUpperCase()}} </div>
-                    <div ><span class="codigo">Cantidad: </span> {{producto.cantidad}} </div>
-                    <div ><span class="codigo">Precio: </span>${{producto.precio}} </div>
-                    <div><span class="codigo">Foto:</span><img :src="'https://pieroja.pythonanywhere.com/uploads/' + producto.foto" width=100 alt="" srcset=""></div>
+    <h1 class="slogan">Listado de Productos</h1> 
 
-                       
-                    </div>        
-                    <img src="https://pieroja.pythonanywhere.com/uploads/{{producto.foto}}" alt="" srcset="">              
-                    <div class="btn-card">
-                        <a href="modificaciones_sinVue3.html" class= "btn-editar">Editar</a>
-                        <button @click="eliminarProducto(producto.codigo)" class= "btn-eliminar">Eliminar</button>
-                    </div>
-                </div>
+    <div class="contenedor-tarjetas">
+        <div class="tarjetas">
+          <div class="tarjeta product-card" v-for="producto in productos">
+            <div class="imagen-tarjeta">
+              <img :src="'https://pieroja.pythonanywhere.com/uploads/' + producto.foto" width="100" alt="" srcset="">
             </div>
+            <div class="contenido-tarjeta">
+              <div><span class="codigo">Codigo: </span>{{producto.codigo}}</div>
+              <div><span class="codigo">Plataforma: </span>{{producto.plataforma.toUpperCase()}}</div>
+              <div><span class="Descripción">Título: </span>{{producto.descripcion.toUpperCase()}}</div>
+              <div><span class="codigo">Cantidad: </span>{{producto.cantidad}}</div>
+              <div><span class="codigo">Precio: </span>${{producto.precio}}</div>
+            </div>
+            <div class="btn-card">
+              <a href="modificaciones_sinVue3.html" class="btn-editar">Editar</a>
+              <button @click="eliminarProducto(producto.codigo)" class="btn-eliminar">Eliminar</button>
+            </div>
+          </div>
         </div>
+    </div>
 
-    </div>   
 
     <div class="contenedor-centrado" >
         <a href="index.html" class="btn-grad">Menu principal</a>

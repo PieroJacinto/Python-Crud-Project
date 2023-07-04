@@ -227,30 +227,46 @@ tr:hover {
     padding-left: 2rem;
     padding-right: 2rem;
 }
-.contenedor-tarjetas{
-    margin-left: 2rem;
-    margin-right: 2rem;
-}
-.tarjetas{   
+.contenedor-tarjetas {
+    margin: 2rem;
+  }
+  
+  .tarjetas {
     display: grid;
-    grid-template-columns: repeat(auto-fill,minmax(225px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
     grid-auto-rows: max-content;
     gap: 1.5rem;
     border-radius: 5px;
-    
-}
-.tarjeta{
+  }
+  
+  .tarjeta {
     display: flex;
     flex-direction: column;
     justify-content: end;
     border: 1px #dee2e6 solid;
-    box-shadow: 0 2px 5px rgba(0,0,0,.2);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
-    height: 100%;
     overflow: hidden;
     transition: all 0.25s;
-}
-.contenido-tarjeta {
+  }
+  
+  .tarjeta:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .imagen-tarjeta {
+    height: 150px;
+    overflow: hidden;
+  }
+  
+  .imagen-tarjeta img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .contenido-tarjeta {
     line-height: 1.5;
     font-size: 1rem;
     padding: 5px;
@@ -258,16 +274,29 @@ tr:hover {
     margin-bottom: 5px;
     margin-top: 5px;
     color: #fff;
-}
-.contenido-tarjeta span {
+  }
+  
+  .contenido-tarjeta span {
     font-size: 1.2rem;
     font-weight: 700;
-}
-.product-card{
+  }
+  
+  .product-card {
     padding: 1rem;
-    background: linear-gradient(90deg, #2b3747, #293545, #283444, #263242, #243141, #222f3f, #212e3e, #1f2c3c);  
-    opacity: .9;     
-}
+    background: linear-gradient(
+      90deg,
+      #2b3747,
+      #293545,
+      #283444,
+      #263242,
+      #243141,
+      #222f3f,
+      #212e3e,
+      #1f2c3c
+    );
+    opacity: 0.9;
+  }
+  
 @media (min-width: 576px) {
     .caja {
         margin-left: 10%;
