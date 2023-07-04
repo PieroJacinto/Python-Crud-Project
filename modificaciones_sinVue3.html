@@ -7,9 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modificar Producto</title>
     <link rel="stylesheet" href="css/estilos.css">
+    <script src="js/custom.js"></script>
+    <script src="js/particles.min.js"></script>
 </head>
 
 <body>
+    <div id="particles-js"></div>
     <h1>Modificar Productos del Inventario</h1>
     <div class="img"><img src="img/logo_codo.png" alt="codoacodo" width="100px"></div>
     <h3>Codo a Codo 2023</h3>
@@ -22,6 +25,9 @@
     <div id="datosProducto" style="display: none;">
         <h2>Datos del Producto</h2>
         <form id="formularioModificar">
+            <label for="plataformaModificar">Plataforma:</label>
+            <input type="text" id="plataformaModificar" name="plataformaModificar" required><br>
+
             <label for="descripcionModificar">Descripción:</label>
             <input type="text" id="descripcionModificar" name="descripcionModificar" required><br>
 
@@ -60,6 +66,7 @@
                 })
                 .then(function (data) {
                     // Mostramos los datos del producto en el formulario de modificación
+                    document.getElementById('plataformaModificar').value = data.plataforma;
                     document.getElementById('descripcionModificar').value = data.descripcion;
                     document.getElementById('cantidadModificar').value = data.cantidad;
                     document.getElementById('precioModificar').value = data.precio;
@@ -80,6 +87,7 @@
 
             // Obtenemos los valores del formulario de modificación
             var codigo = document.getElementById('codigo').value;
+            var plataforma = document.getElementById('plataformaModificar').value;
             var descripcion = document.getElementById('descripcionModificar').value;
             var cantidad = document.getElementById('cantidadModificar').value;
             var precio = document.getElementById('precioModificar').value;
@@ -87,6 +95,7 @@
             // Creamos un objeto con los datos del producto actualizados
             var producto = {
                 codigo: codigo,
+                plataforma: plataforma,
                 descripcion: descripcion,
                 cantidad: cantidad,
                 precio: precio
@@ -100,24 +109,26 @@
                 },
                 body: JSON.stringify(producto)
             })
-                .then(function (response) {
-                    if (response.ok) {
-                        return response.json(); // Parseamos la respuesta JSON
-                    } else {
-                        // Si hubo un error, lanzar explícitamente una excepción
-                        // para ser "catcheada" más adelante
-                        throw new Error('Error al guardar los cambios del producto.');
-                    }
-                })
-                .then(function (data) {
-                    alert('Cambios guardados correctamente.');
-                    location.reload(); // Recargamos la página para volver al formulario de consulta
-                })
-                .catch(function (error) {
-                    // Código para manejar errores
-                    alert('Error al guardar los cambios del producto.');
-                })
+            .then(function (response) {
+                if (response.ok) {
+                    return response.json(); // Parseamos la respuesta JSON
+                } else {
+                    // Si hubo un error, lanzar explícitamente una excepción
+                    // para ser "catcheada" más adelante
+                    throw new Error('Error al guardar los cambios del producto.');
+                }
+            })
+            .then(function (data) {
+                alert('Cambios guardados correctamente.');
+                location.reload(); // Recargamos la página para volver al formulario de consulta
+            })
+            .catch(function (error) {
+                // Código para manejar errores
+                alert('Error al guardar los cambios del producto.');
+            })
         });
     </script>
+    <script src="js/custom.js"></script>
+    <script src="js/particles.min.js"></script>
 </body>
 </html>

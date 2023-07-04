@@ -20,30 +20,17 @@
         <h1 class="titulo">TPO FINAL</h1> 
         <img src="img/logo_codo.png" alt="codoacodo" width="100px">
     </div>
-    <h1>Listado de Productos</h1>
-    <div class="img"><img src="img/logo_codo.png" alt="codoacodo" width="100px"></div>
-    <h3>Codo a Codo 2023</h3>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12 col-md-3"></div>
+    <h1 class="slogan">Listado de Productos</h1>    
+    
+    <div class="contenedor-tarjetas">
+        <div class="tarjetas"  id="tablaProductos2" >
+           
         </div>
-    </div>
-    <table class="table table-striped mt-4">
-        <thead class="table-dark">
-            <tr>
-                <th>Código</th>
-                <th>Plataforma</th>
-                <th>Descripción</th>
-                <th>Cantidad</th>
-                <th >Precio</th>
-            </tr>
-        </thead>
-        <tbody class="table-warning" id="tablaProductos">
-        </tbody>
-    </table>
 
-    <div class="contenedor-centrado">
-        <a href="index.html">Menu principal</a>
+    </div>   
+
+    <div class="contenedor-centrado" >
+        <a href="index.html" class="btn-grad">Menu principal</a>
     </div>
 
     <script>
@@ -62,26 +49,35 @@
                 }
             })
             .then(function (data) {
-                var tablaProductos = document.getElementById('tablaProductos');
-
+                var tablaProductos = document.getElementById('tablaProductos2');
+                console.log(tablaProductos);
                 // Iteramos sobre los productos y agregamos filas a la tabla
                 data.forEach(function (producto) {
-                    var fila = document.createElement('tr');
-                    fila.innerHTML = 
-                        '<div>' + producto.codigo + '</td>' +
-                        '<td>' + producto.plataforma + '</td>' +
-                        '<td>' + producto.descripcion + '</td>' +
-                        '<td >' + producto.cantidad + '</td>' +
-                        '<td >' + producto.precio + '</td>'
-                        '<td >' + producto.foto + '</td>';
+                    var fila = document.createElement('div')
+                    var column = document.createElement('div')
+                    column.classList.add("contenido-tarjeta");
+                    fila.appendChild(column);
+                    fila.classList.add("tarjeta");                    
+                    fila.classList.add("product-card")
+                    
+                    column.innerHTML = 
+                        '<div>' + '<span class="codigo">Codigo: </span> ' + producto.codigo + '</div>' +
+                        '<div>' + '<span class="codigo">Plataforma: </span> '+ producto.plataforma + '</div>' +
+                        '<div>' + '<span class="Descripción">Título: </span> '+producto.descripcion + '</div>' +
+                        '<div >' + '<span class="codigo">Cantidad: </span> '+ producto.cantidad + '</div>' +
+                        '<div >' +'<span class="codigo">Precio: </span> ' + producto.precio + '</div>' +                        
+                        '<div class="btn-card">' + '<button class= "btn-editar">'+ "Editar" + '</button>' + '<button @click="eliminarProducto(' + producto.codigo + ')" class= "btn-eliminar">'+ "Eliminar" + '</button>' + '</div>'
+                        
                     tablaProductos.appendChild(fila);
                 });
             })
             .catch(function (error) {
                 // Código para manejar errores
                 alert('Error al obtener los productos.');
-            });
-    </script>
+            });          
+
+    </script>   
+
     <script src="js/custom.js"></script>
     <script src="js/particles.min.js"></script>
 </body>

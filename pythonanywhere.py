@@ -46,13 +46,13 @@ create_database()
 class Producto:
     def __init__(self, codigo, plataforma, descripcion, cantidad, precio):
         self.codigo = codigo
-        self.plataforma = plataforma 
+        self.plataforma = plataforma
         self.descripcion = descripcion
         self.cantidad = cantidad
         self.precio = precio
 
     def modificar(self, nueva_plataforma, nueva_descripcion, nueva_cantidad, nuevo_precio):
-        self.plataforma = nueva_plataforma    
+        self.plataforma = nueva_plataforma
         self.descripcion = nueva_descripcion
         self.cantidad = nueva_cantidad
         self.precio = nuevo_precio
@@ -212,8 +212,8 @@ def agregar_producto():
 # PUT: permite actualizar información.
 @app.route('/productos/<int:codigo>', methods=['PUT'])
 def modificar_producto(codigo):
-    nueva_plataforma = request.json.get('plataforma')
     nueva_descripcion = request.json.get('descripcion')
+    nueva_plataforma= request.json.get('plataforma')
     nueva_cantidad = request.json.get('cantidad')
     nuevo_precio = request.json.get('precio')
     return inventario.modificar_producto(codigo, nueva_plataforma, nueva_descripcion, nueva_cantidad, nuevo_precio)
@@ -249,8 +249,6 @@ def obtener_carrito():
 @app.route('/')
 def index():
     return 'API de Inventario'
-
-
 
 # Finalmente, si estamos ejecutando este archivo, lanzamos app.
 if __name__ == '__main__':

@@ -7,9 +7,12 @@
   <title>Carrito de compras</title>
   <script src="https://unpkg.com/vue@next"></script>
   <link rel="stylesheet" href="css/estilos.css">
+  <script src="js/custom.js"></script>
+  <script src="js/particles.min.js"></script>
 </head>
 
 <body>
+  <div id="particles-js"></div>
   <div id="app">
     <h1>Carrito de compras</h1>
     <div class="img"><img src="img/logo_codo.png" alt="codoacodo" width="100px"></div>
@@ -21,6 +24,7 @@
           <th>Descripción</th>
           <th>Cantidad</th>
           <th>Precio</th>
+          <th>foto</th>
           <th>Carrito</th>
         </tr>
       </thead>
@@ -30,6 +34,7 @@
           <td>{{ producto.descripcion }}</td>
           <td align="right">{{ producto.cantidad }}</td>
           <td align="right">&nbsp; &nbsp; {{ producto.precio }}</td>
+          <td>{{ producto.foto }}</td>
           <td>
             <button @click="agregarAlCarrito(producto)">&nbsp;&nbsp;<b>+</b>&nbsp;&nbsp;</button>
             <button @click="restarDelCarrito(producto)">&nbsp;&nbsp;<b>-</b>&nbsp;&nbsp;</button>
@@ -47,6 +52,7 @@
             <th>Descripción</th>
             <th>Cantidad</th>
             <th>Precio</th>
+            <th>Foto</th>
           </tr>
         </thead>
         <tbody>
@@ -55,6 +61,7 @@
             <td>{{ item.descripcion }}</td>
             <td align="right">{{ item.cantidad }}</td>
             <td align="right">&nbsp; &nbsp; {{ item.precio }}</td>
+            <td align="right">&nbsp; &nbsp; {{ item.foto }}</td>
           </tr>
         </tbody>
       </table>
@@ -153,6 +160,8 @@
     })
     app.mount('#app')
   </script>
+  <script src="js/custom.js"></script>
+  <script src="js/particles.min.js"></script>
 </body>
 
 </html>
