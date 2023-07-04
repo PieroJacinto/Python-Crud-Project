@@ -35,6 +35,7 @@ input::placeholder{
     display:flex;
     width: 100%;
     justify-content: center;
+    align-items: center;
     margin-top: 3rem;
 }
 .contenedor-centrado a {
@@ -68,6 +69,22 @@ h1, h2, h3, h4, h5, h6 {
     vertical-align: middle !important;
     padding-top: 2rem;
     padding-bottom: 2rem;
+}
+.btn-suma{
+    background-color: green;
+    margin-right: 1rem;
+    border-radius: 5px;
+    padding: 1px;
+    font-size: 1.2rem;
+    
+}
+
+.btn-resta{
+    background-color: red;    
+    border-radius: 5px;  
+    padding: 2px;  
+    font-size: 1.2rem;
+    vertical-align: auto;
 }
 
 .titulo {    
@@ -107,6 +124,18 @@ form a {
     background-size: 200% auto;
     color: white; 
     font-size: 1rem;            
+    border-radius: 10px;
+    display: block;
+}
+.btn-grad2 {
+    background-image: linear-gradient(to right, #0575E6 0%, #021B79  51%, #0575E6  100%);    
+    padding: 15px 45px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white; 
+    font-size: 1.1  rem;            
     border-radius: 10px;
     display: block;
   }
@@ -161,13 +190,28 @@ form a {
     text-decoration: none;
   } 
 
-  .btn-grad:hover {
+  .btn-grad2:hover {
     background-position: right center; /* change the direction of the change here */
     color: #fff;
     text-decoration: none;
   }
- 
+.table {
+    margin-top: 4rem;
+    --bs-table-bg : transparent !important;
+    --bs-table-color: white !important;
+    border-radius: 10px !important;
+}
 
+tr:hover {
+    background: #fdab13   !important;
+}
+.tacho{
+    border: none;
+    background: none;
+    font-size: 1.2rem;
+    color: red;
+    cursor: pointer;
+}
 .caja a {
     /* background: linear-gradient(90deg, #cd7b00, #d48202, #db8804, #e28f07, #e9960a, #ef9d0d, #f6a410, #fdab13); */
     text-align: center;
@@ -309,10 +353,10 @@ border-radius: 0 0 3px 3px;
 table {
     max-width: 90%;
     margin: 0 auto;
-    padding: 20px;
-    background-color: white;
-    border: 1px solid lightslategray;
-    border-radius: 5px;
+    padding: 20px;        
+    border: #fff solid 2px;
+    border-radius: 20px ;
+    color: #fff;
 }
 
 label {
