@@ -59,8 +59,7 @@
                 descripcion: descripcion,
                 cantidad: cantidad,
                 precio: precio
-            };
-            console.log(producto)
+            };            
             // Realizamos la solicitud POST al servidor
             fetch(URL + 'productos', {
                 method: 'POST',
@@ -73,7 +72,7 @@
                     // Código para manejar la respuesta
                     if (response.ok) {
                         return response.json(); // Parseamos la respuesta JSON
-                    } else {
+                    } else {                        
                         // Si hubo un error, lanzar explícitamente una excepción
                         // para ser "catcheada" más adelante
                         throw new Error('Error al agregar el producto.');

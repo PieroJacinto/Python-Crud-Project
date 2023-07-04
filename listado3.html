@@ -27,10 +27,10 @@
             <div class="tarjeta product-card" v-for="producto in productos">
                 <div class="contenido-tarjeta" >
                     <div><span class="codigo">Codigo: </span>{{producto.codigo}} </div>
-                    <div><span class="codigo">Plataforma: </span> {{producto.plataforma}} </div>
-                    <div><span class="Descripción">Título: </span>{{producto.descripcion}} </div>
+                    <div><span class="codigo">Plataforma: </span > {{producto.plataforma.toUpperCase()}} </div>
+                    <div><span class="Descripción">Título: </span >{{producto.descripcion.toUpperCase()}} </div>
                     <div ><span class="codigo">Cantidad: </span> {{producto.cantidad}} </div>
-                    <div ><span class="codigo">Precio: </span>{{producto.precio}} </div>                      
+                    <div ><span class="codigo">Precio: </span>${{producto.precio}} </div>                      
                     <div class="btn-card">
                         <a href="modificaciones_sinVue3.html" class= "btn-editar">Editar</a>
                         <button @click="eliminarProducto(producto.codigo)" class= "btn-eliminar">Eliminar</button>
