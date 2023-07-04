@@ -1,8 +1,14 @@
 /* Estilos para todo el proyecto */
+* { 
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 body {
     font-family: Arial, sans-serif;
-    
-    margin: 0;
+    background-color: black !important;
+    margin: 0;      
+      
 }
 
 input {
@@ -250,7 +256,7 @@ form a {
 #particles-js {
     position: absolute;
     width: 100vw;
-    height: 100vh;
+    height: 100vh;    
     background-color: black;
     background-image: url("");
     background-repeat: no-repeat;
@@ -338,12 +344,19 @@ button[type="submit"] {
     border-radius: 10px;
     display: block;
     width: 100%;
+    font-size: 1rem;
     margin-left: 0px !important;
     margin-right: 0px !important;
 }
 
 
- 
+ .modif-label {
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+ }
 button[type="submit"]:hover {
     background-position: right center; /* change the direction of the change here */
     color: #fff;
