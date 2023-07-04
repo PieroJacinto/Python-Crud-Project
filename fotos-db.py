@@ -1,7 +1,7 @@
 import sqlite3
 
 # Configurar la conexión a la base de datos SQLite
-DATABASE = 'inventario3.db'
+DATABASE = 'fotos.db'
 
 def get_db_connection():
     print("Obteniendo conexión...") # Para probar que se ejecuta la función
@@ -20,8 +20,8 @@ def create_table():
             plataforma TEXT NOT NULL,
             descripcion TEXT NOT NULL,
             cantidad INTEGER NOT NULL,
-            precio REAL NOT NULL
-            
+            precio REAL NOT NULL,
+            foto TEXT NOT NULL
         ) ''')
     conn.commit()
     cursor.close()
@@ -44,19 +44,21 @@ create_database()
 # -------------------------------------------------------------------
 class Producto:
     # Definimos el constructor e inicializamos los atributos de instancia
-    def __init__(self, codigo, plataforma, descripcion, cantidad, precio):
+    def __init__(self, codigo, plataforma, descripcion, cantidad, precio, foto):
         self.codigo = codigo  
         self.plataforma = plataforma         
         self.descripcion = descripcion
         self.cantidad = cantidad       
-        self.precio = precio           
+        self.precio = precio  
+        self.foto = foto         
 
     # Este método permite modificar un producto.
-    def modificar(self, nueva_plataforma, nueva_descripcion, nueva_cantidad, nuevo_precio):
+    def modificar(self, nueva_plataforma, nueva_descripcion, nueva_cantidad, nuevo_precio, nueva_foto):
         self.plataforma = nueva_plataforma 
         self.descripcion = nueva_descripcion  
         self.cantidad = nueva_cantidad        
-        self.precio = nuevo_precio           
+        self.precio = nuevo_precio   
+        self.foto = nueva_foto          
 
 
 # -------------------------------------------------------------------
@@ -67,13 +69,13 @@ class Inventario:
         self.conexion = get_db_connection()
         self.cursor = self.conexion.cursor()
 
-    def agregar_producto(self, codigo, plataforma, descripcion, cantidad, precio):
+    def agregar_producto(self, codigo, plataforma, descripcion, cantidad, precio, foto):
         producto_existente = self.consultar_producto(codigo)
         if producto_existente:
             print("Ya existe un producto con ese código.")
             return False
-        nuevo_producto = Producto(codigo, plataforma, descripcion, cantidad, precio)
-        sql = f'INSERT INTO productos VALUES ({codigo},"{plataforma}","{descripcion}", {cantidad}, {precio});'
+        nuevo_producto = Producto(codigo, plataforma, descripcion, cantidad, precio, foto)
+        sql = f'INSERT INTO productos VALUES ({codigo},"{plataforma}","{descripcion}", {cantidad}, {precio}, "{foto}");'
         self.cursor.execute(sql)
         self.conexion.commit()
         return True
@@ -83,17 +85,17 @@ class Inventario:
         self.cursor.execute(sql)
         row = self.cursor.fetchone()
         if row:
-            codigo, plataforma, descripcion, cantidad, precio = row
-            return Producto(codigo, plataforma, descripcion, cantidad, precio)
+            codigo, plataforma, descripcion, cantidad, precio, foto = row
+            return Producto(codigo, plataforma, descripcion, cantidad, precio, foto)
         return False
 
-    def modificar_producto(self, codigo, nueva_plataforma, nueva_descripcion, nueva_cantidad, nuevo_precio):
+    def modificar_producto(self, codigo, nueva_plataforma, nueva_descripcion, nueva_cantidad, nuevo_precio, nueva_foto):
         producto = self.consultar_producto(codigo)
         if producto:
-            producto.modificar(nueva_plataforma, nueva_descripcion, nueva_cantidad, nuevo_precio)
-            sql = f'UPDATE productos SET plataforma = "{nueva_plataforma}",descripcion = "{nueva_descripcion}", cantidad = {nueva_cantidad}, precio = {nuevo_precio} WHERE codigo = {codigo};' 
+            producto.modificar(nueva_plataforma, nueva_descripcion, nueva_cantidad, nuevo_precio, nueva_foto)
+            sql = f'UPDATE productos SET plataforma = "{nueva_plataforma}",descripcion = "{nueva_descripcion}", cantidad = {nueva_cantidad}, precio = {nuevo_precio}, foto = "{nueva_foto}" WHERE codigo = {codigo};' 
             print("-"*50)
-            print(f'Producto modificado:\nCódigo: {producto.codigo}\Plataforma: {producto.plataforma}\nDescripción: {producto.descripcion}\nCantidad: {producto.cantidad}\nPrecio: {producto.precio}')
+            print(f'Producto modificado:\nCódigo: {producto.codigo}\Plataforma: {producto.plataforma}\nDescripción: {producto.descripcion}\nCantidad: {producto.cantidad}\nPrecio: {producto.precio}\Foto: {producto.foto}')
             self.cursor.execute(sql)
             self.conexion.commit()
 
@@ -109,12 +111,12 @@ class Inventario:
     def listar_productos(self):
         print("-"*50)
         print("INVENTARIO - Lista de productos:")
-        print("Código\tPlataforma\tDescripción\tCant\tPrecio")
+        print("Código\tPlataforma\tDescripción\tCant\tPrecio\tFoto")
         self.cursor.execute("SELECT * FROM productos")
         rows = self.cursor.fetchall()
         for row in rows:
-            codigo, plataforma, descripcion, cantidad, precio = row
-            print(f'{codigo}\t{plataforma}\t{descripcion}\t{cantidad}\t{precio}')
+            codigo, plataforma, descripcion, cantidad, precio, foto = row
+            print(f'{codigo}\t{plataforma}\t{descripcion}\t{cantidad}\t{precio}\t{foto}')
         print("-"*50)
 
 
@@ -145,7 +147,7 @@ class Carrito:
                 self.conexion.commit()
                 return True
 
-        nuevo_item = Producto(codigo, producto.plataforma, producto.descripcion, cantidad, producto.precio)
+        nuevo_item = Producto(codigo, producto.plataforma, producto.descripcion, cantidad, producto.precio, producto.foto)
         self.items.append(nuevo_item)
         sql = f'UPDATE productos SET cantidad = cantidad - {cantidad}  WHERE codigo = {codigo};'
         self.cursor.execute(sql)
@@ -171,9 +173,9 @@ class Carrito:
     def mostrar(self):
         print("-"*50)
         print("CARRITO - Lista de productos:")
-        print("Código\tDescripción\tCant\tPrecio")
+        print("Código\tDescripción\tCant\tPrecio\tFoto")
         for item in self.items:
-            print(f'{item.codigo}\t{item.plataforma}\t{item.descripcion}\t{item.cantidad}\t{item.precio}')
+            print(f'{item.codigo}\t{item.plataforma}\t{item.descripcion}\t{item.cantidad}\t{item.precio}\t{item.foto}')
         print("-"*50)
 
 
@@ -191,7 +193,7 @@ mi_inventario = Inventario()
 mi_carrito = Carrito()
 
 # Crear 3 productos y agregarlos al inventario
-mi_inventario.agregar_producto(7,"pc",'GTA V', 10, 4500)
+mi_inventario.agregar_producto(7,"pc",'GTA V', 10, 4500, 'gta.jpg')
 # mi_inventario.agregar_producto(2, 'PS4' 'The Last of Us 2', 5, 2500)
 # mi_inventario.agregar_producto(3, 'XBOX','rESIDENT eVIL 4', 15, 52500)
 # mi_inventario.agregar_producto(4, 'PC', 'Age of Empires II DE', 25, 50500)
