@@ -9,6 +9,7 @@ input {
     background-color: transparent;
     color: #fff;
     font-size: 1rem;    
+    width: -webkit-fill-available;
 }
 /* Para que siga transparente luego de autocompletar */
 input:-webkit-autofill,
@@ -33,6 +34,7 @@ input::placeholder{
 .contenedor-centrado a {
     font-size: 1.2rem;
 }
+
 a {
     text-decoration: none !important;
     color: white !important;
@@ -49,7 +51,7 @@ p {
 
 h1, h2, h3, h4, h5, h6 {
     text-align: center;
-    color: #007bff;
+    
     margin: 0;
 }
 
@@ -74,7 +76,14 @@ h1, h2, h3, h4, h5, h6 {
     padding: 2rem;    
     border-radius: 10px;    
 }
+.modif-container {
+    margin-left: 30%;
+    margin-right: 30%;
+}
+.modif-input{
+    width: 100%;
 
+}
 form .btn-grad{
     width: 100%;
     padding: 15px 0px;
@@ -314,20 +323,23 @@ textarea {
     border: 1px solid #cccccc;
     border-radius: 5px;
     background-color: transparent;
+    width: -webkit-fill-available;
 }
 
 button[type="submit"] {
     background-image: linear-gradient(to right, #0575E6 0%, #021B79  51%, #0575E6  100%);
     margin-bottom: 1rem;
-    padding: 15px 45px;
+    padding: 15px 0px;
     text-align: center;
     text-transform: uppercase;
     transition: 0.5s;
     background-size: 200% auto;
-    color: white;          
-    
+    color: white;       
     border-radius: 10px;
     display: block;
+    width: 100%;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
 }
 
 
@@ -339,9 +351,7 @@ button[type="submit"]:hover {
 }
 
 button {
-    padding: 8px;
-    margin:4px;
-    background-color: #007bff;
+    margin-top: 1rem;   
     color: #ffffff;
     border: none;
     border-radius: 5px;

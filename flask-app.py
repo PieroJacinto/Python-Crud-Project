@@ -250,8 +250,6 @@ def obtener_carrito():
 def index():
     return 'API de Inventario'
 
-
-
 # Finalmente, si estamos ejecutando este archivo, lanzamos app.
 if __name__ == '__main__':
     app.run()
