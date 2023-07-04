@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar producto</title>
+    <link rel="stylesheet" href="css/estilos.css">
+    <script src="js/custom.js"></script>
+    <script src="js/particles.min.js"></script>
+      <!-- Bootstrap -->
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+
+<body>
+    <div id="particles-js"></div>
+    <div class="logoTitle">
+        <h1 class="titulo">TPO FINAL</h1> 
+            <img src="img/logo_codo.png" alt="codoacodo" width="100px">
+    </div>
+    <h1 class="slogan">Agregar Productos al Inventario</h1>
+    
+    <form id="formulario" class="caja">
+        
+        <input type="text" id="codigo" name="codigo" placeholder="Codigo" required><br>
+
+        
+        <input type="text" id="plataforma" name="plataforma" placeholder="Plataforma" required><br>
+
+        <input type="text" id="descripcion" name="descripcion" placeholder="Titulo" required><br>
+
+        <input type="number" id="cantidad" name="cantidad" placeholder="Cantidad" required><br>
+
+        <input type="number" step="0.01" id="precio" name="precio" placeholder="Precio" required><br>
+        <input type="file" step="0.01" id="foto" name="foto" placeholder="foto" required><br>
+                
+        <button type="submit">Agregar Producto</button>
+        <a href="index.html" class="btn-grad ">Menu principal</a>
+    </form>
+
+    <script>
+        //const URL = "http://127.0.0.1:5000/"
+        const URL = "http://pieroja.pythonanywhere.com/"
+        // Capturamos el evento de envío del formulario
+        document.getElementById('formulario').addEventListener('submit', function (event) {
+            event.preventDefault(); // Evitamos que se envie el form por ahora
+
+            // Obtenemos los valores del formulario
+            var codigo = document.getElementById('codigo').value;
+            var plataforma = document.getElementById('plataforma').value;
+            var descripcion = document.getElementById('descripcion').value;
+            var cantidad = document.getElementById('cantidad').value;
+            var precio = document.getElementById('precio').value;
+            var foto = document.getElementById('foto').files[0];          
+            
+            // Creamos un objeto con los datos del producto
+            var producto = {
+                codigo: codigo,
+                plataforma: plataforma,
+                descripcion: descripcion,
+                cantidad: cantidad,
+                precio: precio,
+                foto: foto
+            };            
+            // Creamos un objeto FormData y agregamos los campos del formulario
+            var formData = new FormData();
+            formData.append('codigo', producto.codigo);
+            formData.append('plataforma', producto.plataforma);
+            formData.append('descripcion', producto.descripcion);
+            formData.append('cantidad', producto.cantidad);
+            formData.append('precio', producto.precio);
+            formData.append('foto', producto.foto);  // Agregamos el archivo
+
+            // Realizamos la solicitud POST al servidor
+            fetch(URL + 'productos', {
+                method: 'POST',
+                body: formData
+            })
+            .then(function (response) {
+                    
+                    // Código para manejar la respuesta
+                    if (response.ok) {                        
+                        return response.json(); // Parseamos la respuesta JSON
+                    } else {                        
+                        // Si hubo un error, lanzar explícitamente una excepción
+                        // para ser "catcheada" más adelante
+                        throw new Error('Error al agregar el producto.');
+                    }
+                })
+                .then(function (data) {
+                    alert('Producto agregado correctamente.');
+                    //Limpiamos el formulario.
+                    document.getElementById('codigo').value = "";
+                    document.getElementById('plataforma').value = "";
+                    document.getElementById('descripcion').value = "";
+                    document.getElementById('cantidad').value = "";
+                    document.getElementById('precio').value = "";
+                    document.getElementById('foto').value = "";
+                })
+                .catch(function (error) {
+                    // Código para manejar errores
+                    alert('Error al agregar el producto.');
+                });
+        })
+    </script>
+    <script src="js/custom.js"></script>
+    <script src="js/particles.min.js"></script>
+</body></html>

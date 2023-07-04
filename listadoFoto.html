@@ -5,49 +5,49 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Baja de Productos</title>
+    <title>Listado de Productos</title>
     <link rel="stylesheet" href="css/estilos.css">
     <script src="js/custom.js"></script>
     <script src="js/particles.min.js"></script>
-    <!-- Fonts Awesome -->
-    <script src="https://kit.fontawesome.com/2cffc479ad.js" crossorigin="anonymous"></script>
+
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 </head>
-
+<div id="particles-js"></div>
 <body>
-    <div id="particles-js"></div>
+    
     <div class="logoTitle">
         <h1 class="titulo">TPO FINAL</h1> 
         <img src="img/logo_codo.png" alt="codoacodo" width="100px">
     </div>
-    <h1 class="slogan">Baja de Productos</h1>   
-  
-    <table class="table tabla-eliminar">
-        <thead>
-            <tr>
-                <th>Código</th>
-                <th>Descripción</th>
-                <th>Cantidad</th>
-                <th>Precio</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="producto in productos">
-                <td>{{ producto.codigo }}</td>
-                <td>{{ producto.descripcion }}</td>
-                <td>{{ producto.cantidad }}</td>                
-                <td>${{ producto.precio }}</td>
-                <td>
-                    <i @click="eliminarProducto(producto.codigo)" class="fa-solid fa-trash-can tacho"></i>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <h1 class="slogan">Listado de Productos</h1>    
+    
+    <div class="contenedor-tarjetas" >
+        <div class="tarjetas"  >
+            <div class="tarjeta product-card" v-for="producto in productos">
+                <div class="contenido-tarjeta" >
+                    <div><span class="codigo">Codigo: </span>{{producto.codigo}} </div>
+                    <div><span class="codigo">Plataforma: </span > {{producto.plataforma.toUpperCase()}} </div>
+                    <div><span class="Descripción">Título: </span >{{producto.descripcion.toUpperCase()}} </div>
+                    <div ><span class="codigo">Cantidad: </span> {{producto.cantidad}} </div>
+                    <div ><span class="codigo">Precio: </span>${{producto.precio}} </div>
+                    <div><span class="codigo">Foto:</span><img :src="'https://pieroja.pythonanywhere.com/uploads/' + producto.foto" width=100 alt="" srcset=""></div>
 
-    <div class="contenedor-centrado">
-        <a class="btn-grad" href="index.html">Menu principal</a>
+                       
+                    </div>        
+                    <img src="https://pieroja.pythonanywhere.com/uploads/{{producto.foto}}" alt="" srcset="">              
+                    <div class="btn-card">
+                        <a href="modificaciones_sinVue3.html" class= "btn-editar">Editar</a>
+                        <button @click="eliminarProducto(producto.codigo)" class= "btn-eliminar">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>   
+
+    <div class="contenedor-centrado" >
+        <a href="index.html" class="btn-grad">Menu principal</a>
     </div>
 
     <script src="https://unpkg.com/vue@next"></script>
@@ -111,6 +111,7 @@
 
         app.mount('body');
     </script>
+
     <script src="js/custom.js"></script>
     <script src="js/particles.min.js"></script>
 </body>

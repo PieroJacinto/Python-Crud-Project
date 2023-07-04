@@ -1,6 +1,8 @@
 import sqlite3
 from flask import Flask,  jsonify, request
 from flask_cors import CORS
+from datetime import datetime
+import os
 
 
 # Configurar la conexión a la base de datos SQLite
@@ -176,6 +178,9 @@ class Carrito:
 
 app = Flask(__name__)
 CORS(app)
+UPLOADS = os.path.join('uploads')
+
+app.config['UPLOADS'] = UPLOADS
 
 carrito = Carrito()         # Instanciamos un carrito
 inventario = Inventario()   # Instanciamos un inventario
@@ -211,7 +216,12 @@ def agregar_producto():
     cantidad = request.json.get('cantidad')
     precio = request.json.get('precio')
     foto = request.json.get('foto')
-    return inventario.agregar_producto(codigo, plataforma, descripcion, cantidad, precio, foto)
+
+    now = datetime.now()
+    tiempo = now.strftime("%Y%H%M%S")
+    newFotoName = tiempo + '_' + foto
+    foto.save("/uploads/" + newFotoName)
+    return inventario.agregar_producto(codigo, plataforma, descripcion, cantidad, precio, newFotoName)
 
 # 5 - Ruta para modificar un producto del inventario
 # PUT: permite actualizar información.
