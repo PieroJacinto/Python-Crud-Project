@@ -33,7 +33,7 @@
         <input type="number" id="cantidad" name="cantidad" placeholder="Cantidad" required><br>
 
         <input type="number" step="0.01" id="precio" name="precio" placeholder="Precio" required><br>
-        <input type="file" step="0.01" id="foto" name="foto" placeholder="foto" required><br>
+        <input type="file" id="foto" name="foto" placeholder="foto" required><br>
                 
         <button type="submit">Agregar Producto</button>
         <a href="index.html" class="btn-grad ">Menu principal</a>
@@ -41,7 +41,7 @@
 
     <script>
         //const URL = "http://127.0.0.1:5000/"
-        const URL = "http://pieroja.pythonanywhere.com/"
+        const URL = "https://pieroja.pythonanywhere.com/"
         // Capturamos el evento de envío del formulario
         document.getElementById('formulario').addEventListener('submit', function (event) {
             event.preventDefault(); // Evitamos que se envie el form por ahora

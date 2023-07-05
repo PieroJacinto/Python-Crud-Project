@@ -36,7 +36,8 @@
               <div><span class="codigo">Precio: </span>${{producto.precio}}</div>
             </div>
             <div class="btn-card">
-                <a :href="'editar_producto.html?codigo=' + producto.codigo" class="btn-editar">Editar</a>
+                <!-- <a :href="'editar_producto.html?codigo=' + producto.codigo" class="btn-editar">Editar</a> -->
+                <a href="modificaciones_sinVue3.html"class="btn-editar">Editar</a>
 
               <button @click="eliminarProducto(producto.codigo)" class="btn-eliminar">Eliminar</button>
             </div>

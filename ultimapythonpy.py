@@ -4,6 +4,7 @@ import sqlite3
 from flask import Flask,  jsonify, request, send_from_directory
 from flask_cors import CORS
 
+from werkzeug.utils import secure_filename
 
 from datetime import datetime
 import os
@@ -94,7 +95,16 @@ class Inventario:
     def modificar_producto(self, codigo, nueva_plataforma, nueva_descripcion, nueva_cantidad, nuevo_precio, nueva_foto):
         producto = self.consultar_producto(codigo)
         if producto:
-            producto.modificar(nueva_plataforma, nueva_descripcion, nueva_cantidad, nuevo_precio, nueva_foto)
+            # Eliminar la imagen anterior si existe
+            if producto.foto:
+                foto_anterior = os.path.join(app.config['UPLOAD_FOLDER'], producto.foto)
+                if os.path.exists(foto_anterior):
+                    os.remove(foto_anterior)
+                else:
+                    print(f"El archivo '{foto_anterior}' no existe.")
+
+            # Actualizar los datos del producto
+            #producto.modificar(nueva_plataforma, nueva_descripcion, nueva_cantidad, nuevo_precio, nueva_foto)
             self.cursor.execute("UPDATE productos SET plataforma = ?, descripcion = ?, cantidad = ?, precio = ?, foto = ? WHERE codigo = ?",
                                 (nueva_plataforma, nueva_descripcion, nueva_cantidad, nuevo_precio, nueva_foto, codigo))
             self.conexion.commit()
@@ -180,7 +190,7 @@ class Carrito:
         productos_carrito = []
         for item in self.items:
             producto = {'codigo': item.codigo, 'plataforma': item.plataforma, 'descripcion': item.descripcion, 'cantidad': item.cantidad,
-                        'precio': item.precio, 'foto': producto.foto}
+                        'precio': item.precio}
             productos_carrito.append(producto)
         return jsonify(productos_carrito), 200
 
@@ -193,6 +203,7 @@ app = Flask(__name__)
 CORS(app)
 UPLOADS = os.path.join(app.root_path, 'uploads')
 app.config['UPLOADS'] = UPLOADS
+app.config['UPLOAD_FOLDER'] = '/home/pieroja/mysite/uploads/'
 carrito = Carrito()         # Instanciamos un carrito
 inventario = Inventario()   # Instanciamos un inventario
 
@@ -230,46 +241,39 @@ def agregar_producto():
     cantidad = request.form.get('cantidad')
     precio = request.form.get('precio')
     foto = request.files['foto']
-    print('------foto-----', foto)
 
     now = datetime.now()
     tiempo = now.strftime("%Y%H%M%S")
-    newFotoName = tiempo + '_' + foto.filename
-    foto.save("/home/pieroja/mysite/uploads/" + newFotoName)
-    return inventario.agregar_producto(codigo, plataforma, descripcion, cantidad, precio, newFotoName)
+
+    filename = secure_filename(foto.filename)
+    nuevoFilename = tiempo + '_' + filename
+    foto.save(os.path.join(app.config['UPLOAD_FOLDER'], nuevoFilename))
+    nueva_foto = os.path.join(app.config['UPLOAD_FOLDER'], nuevoFilename)
+    return inventario.agregar_producto(codigo, plataforma, descripcion, cantidad, precio, nuevoFilename)
 
 # 5 - Ruta para modificar un producto del inventario
 # PUT: permite actualizar información.
 @app.route('/productos/<codigo>', methods=['PUT'])
 def modificar_producto(codigo):
-    # Obtener los datos del producto del cuerpo de la solicitud
-    data = request.get_json()
-    plataforma = data['plataforma']
-    descripcion = data['descripcion']
-    cantidad = data['cantidad']
-    precio = data['precio']
-    foto = data['foto']
+    # Obtener los datos del producto del formulario
+    nueva_plataforma = request.form['plataformaModificar']
+    nueva_descripcion = request.form['descripcionModificar']
+    nueva_cantidad = request.form['cantidadModificar']
+    nuevo_precio = float(request.form['precioModificar'])  # Convertir a float
+    foto = request.files['fotoModificar']
+    now = datetime.now()
+    tiempo = now.strftime("%Y%H%M%S")
+    if foto:
+        filename = secure_filename(foto.filename)
+        nuevoFilename = tiempo + '_' + filename
+        foto.save(os.path.join(app.config['UPLOAD_FOLDER'], nuevoFilename))
+        nueva_foto = os.path.join(app.config['UPLOAD_FOLDER'], nuevoFilename)
+        print('-----foto-path----', nueva_foto)
+    else:
+        foto_path = None
+    print(nueva_foto)
 
-    # Conectar a la base de datos
-    conn = sqlite3.connect('productos.db')
-    cursor = conn.cursor()
-
-    # Actualizar los datos del producto en la base de datos
-    cursor.execute('''
-        UPDATE productos
-        SET plataforma = ?, descripcion = ?, cantidad = ?, precio = ?, foto = ?
-        WHERE codigo = ?
-    ''', (plataforma, descripcion, cantidad, precio, foto, codigo))
-
-    # Guardar los cambios en la base de datos
-    conn.commit()
-
-    # Cerrar la conexión a la base de datos
-    conn.close()
-
-    # Devolver una respuesta exitosa
-    return jsonify({'message': 'Producto modificado correctamente'})
-
+    return inventario.modificar_producto(codigo, nueva_plataforma, nueva_descripcion, nueva_cantidad, nuevo_precio, nuevoFilename)
 # 6 - Ruta para eliminar un producto del inventario
 # DELETE: permite eliminar información.
 @app.route('/productos/<int:codigo>', methods=['DELETE'])

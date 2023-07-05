@@ -33,7 +33,8 @@
 
     <div id="datosProducto" style="display: none;">
         <h2 class="slogan">Datos del Producto</h2>
-        <form id="formularioModificar" class="caja">
+       
+        <form id="formularioModificar" class="caja" enctype="multipart/form-data">
             <label class="modif-label" for="plataformaModificar">Plataforma:</label>            
             <input type="text" id="plataformaModificar" name="plataformaModificar" required><br>
 
@@ -44,15 +45,15 @@
             <input type="number" id="cantidadModificar" name="cantidadModificar" required><br>
 
             <label class="modif-label" for="precioModificar">Precio:</label>
-            <input type="number" step="0.01" id="precioModificar" name="precioModificar" required><br>
-
+            <input type="number" step="0.01" id="precioModificar" name="precioModificar" required><br> 
+            
             <label class="modif-label" for="fotoModificar">Foto:</label>
-            <input type="number" step="0.01" id="fotoModificar" name="fotoModificar" required><br>
+            <input type="file" id="fotoModificar" name="fotoModificar" accept="image/*"><br>
 
             <button type="submit">Guardar Cambios</button>
-            <a class="btn-grad" href="modificaciones.html">Cancelar</a>
+            <a class="btn-grad" href="modificaciones_sinVue3.html">Cancelar</a>
         </form>
-    </div>
+    </div>   
 
     <script>
         //const URL = "http://127.0.0.1:5000/"
@@ -76,12 +77,11 @@
                     const producto = data[index];                    ;
 
                     if (index == 0) {
-                        options += '<option selected>' + producto.descripcion + '</option>';
+                        options += '<option selected>' + producto.codigo + '</option>';
                     } else {
-                        options += '<option value="' + producto.descripcion + '">' + producto.descripcion + '</option>';
+                        options += '<option value="' + producto.codigo + '">' + producto.codigo + '</option>';
                     }
                 }
-
                 select.innerHTML = options; 
             })
             .catch(function (error) {
@@ -91,8 +91,7 @@
         // Capturamos el evento de envío del formulario para mostrar los datos del producto
         document.getElementById('formulario').addEventListener('submit', function (event) {
             event.preventDefault(); // Evitamos que se recargue la página
-
-
+            
             // Obtenemos el código del producto
             var codigo = document.getElementById('codigo').value;
 
@@ -113,11 +112,10 @@
                     document.getElementById('descripcionModificar').value = data.descripcion;
                     document.getElementById('cantidadModificar').value = data.cantidad;
                     document.getElementById('precioModificar').value = data.precio;
-                    document.getElementById('fotoModificar').value = data.foto;
+                    // document.getElementById('fotoModificar').value = data.foto;
                     
-                    // Mostramos el formulario de modificación y ocultamos el formulario de consulta
-                    document.getElementById('formulario').style.display = 'none';
-                    document.getElementById('datosProducto').style.display = 'block';
+                   
+                    
                 })
                 .catch(function (error) {
                     // Código para manejar errores
@@ -127,52 +125,52 @@
 
         // Capturamos el evento de envío del formulario de modificación
         document.getElementById('formularioModificar').addEventListener('submit', function (event) {
-            event.preventDefault(); // Evitamos que se recargue la página
+        event.preventDefault(); // Evitamos que se recargue la página
+        console.log('Evento de envío del formulario capturado');
 
-            // Obtenemos los valores del formulario de modificación
-            var codigo = document.getElementById('codigo').value;
-            var plataforma = document.getElementById('plataformaModificar').value;
-            var descripcion = document.getElementById('descripcionModificar').value;
-            var cantidad = document.getElementById('cantidadModificar').value;
-            var precio = document.getElementById('precioModificar').value;
-            var foto = document.getElementById('fotoModificar').value;
 
-            // Creamos un objeto con los datos del producto actualizados
-            var producto = {
-                codigo: codigo,
-                plataforma: plataforma,
-                descripcion: descripcion,
-                cantidad: cantidad,
-                precio: precio,
-                foto: foto
-            };
+        // Obtenemos los valores del formulario de modificación
+        var codigo = document.getElementById('codigo').value;
+        var plataforma = document.getElementById('plataformaModificar').value;
+        var descripcion = document.getElementById('descripcionModificar').value;
+        var cantidad = document.getElementById('cantidadModificar').value;
+        var precio = document.getElementById('precioModificar').value;
+        var foto = document.getElementById('fotoModificar').files[0]; // Obtenemos el archivo correctamente
 
-            // Realizamos la solicitud PUT al servidor para guardar los cambios
-            fetch(URL + 'productos/' + codigo, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(producto)
-            })
-            .then(function (response) {
-                if (response.ok) {
-                    return response.json(); // Parseamos la respuesta JSON
-                } else {
-                    // Si hubo un error, lanzar explícitamente una excepción
-                    // para ser "catcheada" más adelante
-                    throw new Error('Error al guardar los cambios del producto.');
-                }
-            })
-            .then(function (data) {
-                alert('Cambios guardados correctamente.');
-                location.reload(); // Recargamos la página para volver al formulario de consulta
-            })
-            .catch(function (error) {
-                // Código para manejar errores
-                alert('Error al guardar los cambios del producto.');
-            })
-        });
+        // Creamos un objeto FormData para enviar los datos del formulario
+        var formData = new FormData();
+        formData.append('plataformaModificar', plataforma); // Utilizamos 'plataformaModificar' en lugar de 'plataforma'
+        formData.append('descripcionModificar', descripcion);
+        formData.append('cantidadModificar', cantidad);
+        formData.append('precioModificar', precio);
+        formData.append('fotoModificar', foto);
+
+        // Realizamos la solicitud PUT al servidor para guardar los cambios
+        fetch(URL + 'productos/' + codigo, {
+            method: 'PUT',
+            body: formData
+        })
+        .then(function (response) {
+            if (response.ok) {
+            // Si la respuesta indica que la modificación fue exitosa
+            // Mostrar la alerta y redirigir a listaFoto.html
+            alert('Producto modificado correctamente.');
+            setTimeout(function () {
+                window.location.href = 'listadoFoto.html';
+            }, 2000); // Redireccionar después de 2 segundos (2000 milisegundos)
+            } else {
+                // Si hubo un error en la modificación
+                // Mostrar la alerta de error
+                document.getElementById('alerta').textContent = 'Error al modificar el producto.';
+                document.getElementById('alerta').style.display = 'block';
+            }
+        })
+        .catch(function (error) {
+            // Código para manejar errores
+            console.log('Error al enviar la solicitud de modificación del producto:', error);
+            alert('Error al enviar la solicitud de modificación del producto.');
+        })
+    });
     </script>
     <script src="js/custom.js"></script>
     <script src="js/particles.min.js"></script>
