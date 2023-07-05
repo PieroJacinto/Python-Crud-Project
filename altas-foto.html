@@ -68,7 +68,7 @@
             var descripcion = document.getElementById('descripcion').value;
             var cantidad = document.getElementById('cantidad').value;
             var precio = document.getElementById('precio').value;
-            var foto = document.getElementById('foto').files[0];          
+            var foto = document.getElementById('fotoModificar').files[0];      
             
             // Creamos un objeto con los datos del producto
             var producto = {
@@ -113,7 +113,7 @@
                 document.getElementById('descripcion').value = "";
                 document.getElementById('cantidad').value = "";
                 document.getElementById('precio').value = "";
-                document.getElementById('foto').value = "";
+                document.getElementById('fotoModificar').value = "";
 
                 // Redirigimos a la página de listado de productos
                 window.location.href = "listadoFoto.html";

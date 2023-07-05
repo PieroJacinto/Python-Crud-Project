@@ -16,12 +16,12 @@
 <body>
     <div id="particles-js"></div>
     <div class="logoTitle">
-        <h1 class="titulo">TPO FINAL</h1> 
-        <img src="img/logo_codo.png" alt="codoacodo" width="100px">        
+        <h1 class="titulo">TPO FINAL</h1>
+        <img src="img/logo_codo.png" alt="codoacodo" width="100px">
     </div>
     <h1 class="slogan">Modificar Productos del Inventario</h1>
-    <form id="formulario" class="modif-container">    
-        <select class="form-select mb-4" id="codigo" >
+    <form id="formulario" class="modif-container">
+        <select class="form-select mb-4" id="codigo">
            
         </select>
        
@@ -35,7 +35,7 @@
         <h2 class="slogan">Datos del Producto</h2>
        
         <form id="formularioModificar" class="caja mrg-bottom" enctype="multipart/form-data">
-            <label class="modif-label" for="plataformaModificar">Plataforma:</label>            
+            <label class="modif-label" for="plataformaModificar">Plataforma:</label>
             <input type="text" id="plataformaModificar" name="plataformaModificar" required><br>
 
             <label class="modif-label" for="descripcionModificar">Descripción:</label>
@@ -47,8 +47,12 @@
             <label class="modif-label" for="precioModificar">Precio:</label>
             <input type="number" step="0.01" id="precioModificar" name="precioModificar" required><br> 
             
-            <label class="modif-label" for="fotoModificar">Foto:</label>
-            <input type="file" id="fotoModificar" name="fotoModificar" accept="image/*"><br>
+            <div class="mb-5 ">
+                <label class=" file-label" for="fotoModificar">Foto:</label>
+                <span class="btn-span" id="file-label-text">Seleccionar archivo</span>
+                <input type="file" id="fotoModificar" class="file-input" >
+            </div>
+            
 
             <button type="submit">Guardar Cambios</button>
             <a class="btn-grad" href="modificaciones_sinVue3.html">Cancelar</a>
@@ -58,6 +62,16 @@
     <script>
         //const URL = "http://127.0.0.1:5000/"
         const URL = "https://pieroja.pythonanywhere.com/";
+
+         // Capturamos el evento de cambio en el campo de archivo
+         document.getElementById('fotoModificar').addEventListener('change', function (event) {
+            var fileInput = event.target;
+            var fileName = fileInput.files[0].name;
+
+            // Actualizamos el texto del campo de archivo con el nombre seleccionado
+            var fileLabelText = document.getElementById('file-label-text');
+            fileLabelText.textContent = fileName;
+        });
 
         fetch(URL + 'productos')
             .then(function (response) {
@@ -77,9 +91,9 @@
                     const producto = data[index];                    ;
 
                     if (index == 0) {
-                        options += '<option selected>' + producto.codigo + '</option>';
+                        options += '<option selected data-codigo="' + producto.codigo + '">' + producto.descripcion + '</option>';
                     } else {
-                        options += '<option value="' + producto.codigo + '">' + producto.codigo + '</option>';
+                        options += '<option value="' + producto.codigo + '" data-codigo="' + producto.codigo + '">' + producto.descripcion + '</option>';
                     }
                 }
                 select.innerHTML = options; 
@@ -92,8 +106,12 @@
         document.getElementById('formulario').addEventListener('submit', function (event) {
             event.preventDefault(); // Evitamos que se recargue la página
             
-            // Obtenemos el código del producto
-            var codigo = document.getElementById('codigo').value;
+            // Obtenemos la opción seleccionada
+            var select = document.getElementById('codigo');
+            var option = select.options[select.selectedIndex];
+
+            // Obtenemos el código del producto del atributo data-codigo de la opción seleccionada
+            var codigo = option.dataset.codigo;
 
             // Realizamos la solicitud GET al servidor para obtener los datos del producto
             fetch(URL + 'productos/' + codigo)
@@ -124,56 +142,57 @@
                 });
         });
 
-        // Capturamos el evento de envío del formulario de modificación
+       // Capturamos el evento de envío del formulario de modificación
         document.getElementById('formularioModificar').addEventListener('submit', function (event) {
-        event.preventDefault(); // Evitamos que se recargue la página
-        console.log('Evento de envío del formulario capturado');
+            event.preventDefault(); // Evitamos que se recargue la página
+            console.log('Evento de envío del formulario capturado');
 
+            // Obtenemos los valores del formulario de modificación
+            var select = document.getElementById('codigo');
+            var option = select.options[select.selectedIndex];
+            var codigo = option.getAttribute('data-codigo');
+            var plataforma = document.getElementById('plataformaModificar').value;
+            var descripcion = document.getElementById('descripcionModificar').value;
+            var cantidad = document.getElementById('cantidadModificar').value;
+            var precio = document.getElementById('precioModificar').value;
+            var foto = document.getElementById('fotoModificar').files[0]; // Obtenemos el archivo correctamente
 
-        // Obtenemos los valores del formulario de modificación
-        var codigo = document.getElementById('codigo').value;
-        var plataforma = document.getElementById('plataformaModificar').value;
-        var descripcion = document.getElementById('descripcionModificar').value;
-        var cantidad = document.getElementById('cantidadModificar').value;
-        var precio = document.getElementById('precioModificar').value;
-        var foto = document.getElementById('fotoModificar').files[0]; // Obtenemos el archivo correctamente
+            // Creamos un objeto FormData para enviar los datos del formulario
+            var formData = new FormData();
+            formData.append('plataformaModificar', plataforma); // Utilizamos 'plataformaModificar' en lugar de 'plataforma'
+            formData.append('descripcionModificar', descripcion);
+            formData.append('cantidadModificar', cantidad);
+            formData.append('precioModificar', precio);
+            formData.append('fotoModificar', foto);
 
-        // Creamos un objeto FormData para enviar los datos del formulario
-        var formData = new FormData();
-        formData.append('plataformaModificar', plataforma); // Utilizamos 'plataformaModificar' en lugar de 'plataforma'
-        formData.append('descripcionModificar', descripcion);
-        formData.append('cantidadModificar', cantidad);
-        formData.append('precioModificar', precio);
-        formData.append('fotoModificar', foto);
+            // Realizamos la solicitud PUT al servidor para guardar los cambios
+            fetch(URL + 'productos/' + codigo, {
+                method: 'PUT',
+                body: formData
+            })
+            .then(function (response) {
+                if (response.ok) {
+                    // Si la respuesta indica que la modificación fue exitosa
+                    // Mostrar la alerta y redirigir a listaFoto.html
+                    alert('Producto modificado correctamente.');
+                    setTimeout(function () {
+                        window.location.href = 'listadoFoto.html';
+                    }, 2000); // Redireccionar después de 2 segundos (2000 milisegundos)
+                } else {
+                    // Si hubo un error en la modificación
+                    // Mostrar la alerta de error
+                    console.log('Error al modificar el producto:', error);
+                    alert('Error al modificar el producto.');
+                }
+            })
+            .catch(function (error) {
+                // Código para manejar errores
+                console.log('Error al enviar la solicitud de modificación del producto:', error);
+                alert('Error al enviar la solicitud de modificación del producto.');
+            })
+        });
 
-        // Realizamos la solicitud PUT al servidor para guardar los cambios
-        fetch(URL + 'productos/' + codigo, {
-            method: 'PUT',
-            body: formData
-        })
-        .then(function (response) {
-            if (response.ok) {
-            // Si la respuesta indica que la modificación fue exitosa
-            // Mostrar la alerta y redirigir a listaFoto.html
-            alert('Producto modificado correctamente.');
-            setTimeout(function () {
-                window.location.href = 'listadoFoto.html';
-            }, 2000); // Redireccionar después de 2 segundos (2000 milisegundos)
-            } else {
-                // Si hubo un error en la modificación
-                // Mostrar la alerta de error
-                console.log('Error al  modificar el producto:', error);
-                alert('Error al modificar el producto.');
-            }
-        })
-        .catch(function (error) {
-            // Código para manejar errores
-            console.log('Error al enviar la solicitud de modificación del producto:', error);
-            alert('Error al enviar la solicitud de modificación del producto.');
-        })
-    });
     </script>
     <script src="js/custom.js"></script>
     <script src="js/particles.min.js"></script>
 </body>
-</html>
