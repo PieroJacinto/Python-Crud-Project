@@ -33,15 +33,31 @@
         <input type="number" id="cantidad" name="cantidad" placeholder="Cantidad" required><br>
 
         <input type="number" step="0.01" id="precio" name="precio" placeholder="Precio" required><br>
-        <input type="file" id="foto" name="foto" placeholder="foto" required><br>
+
+        <div class="mb-5 ">
+            <label class=" file-label" for="fotoModificar">Foto:</label>
+            <span class="btn-span" id="file-label-text">Seleccionar archivo</span>
+            <input type="file" id="fotoModificar" class="file-input" >
+        </div>
+        <!-- <input type="file" step="0.01" id="foto" name="foto" placeholder="foto" required><br> -->
                 
         <button type="submit">Agregar Producto</button>
-        <a href="index.html" class="btn-grad ">Menu principal</a>
+        <a href="index.html" class="btn-grad mrg-bottom">Menu principal</a>
     </form>
 
     <script>
         //const URL = "http://127.0.0.1:5000/"
         const URL = "https://pieroja.pythonanywhere.com/"
+
+        // Capturamos el evento de cambio en el campo de archivo
+        document.getElementById('fotoModificar').addEventListener('change', function (event) {
+            var fileInput = event.target;
+            var fileName = fileInput.files[0].name;
+
+            // Actualizamos el texto del campo de archivo con el nombre seleccionado
+            var fileLabelText = document.getElementById('file-label-text');
+            fileLabelText.textContent = fileName;
+        });
         // Capturamos el evento de envío del formulario
         document.getElementById('formulario').addEventListener('submit', function (event) {
             event.preventDefault(); // Evitamos que se envie el form por ahora
@@ -79,32 +95,33 @@
             })
             .then(function (response) {
                     
-                    // Código para manejar la respuesta
-                    if (response.ok) {                        
-                        return response.json(); // Parseamos la respuesta JSON
-                    } else {                        
-                        // Si hubo un error, lanzar explícitamente una excepción
-                        // para ser "catcheada" más adelante
-                        throw new Error('Error al agregar el producto.');
-                    }
-                })
-                .then(function (data) {
-                    alert('Producto agregado correctamente.');
-                    //Limpiamos el formulario.
-                    document.getElementById('codigo').value = "";
-                    document.getElementById('plataforma').value = "";
-                    document.getElementById('descripcion').value = "";
-                    document.getElementById('cantidad').value = "";
-                    document.getElementById('precio').value = "";
-                    document.getElementById('foto').value = "";
+                // Código para manejar la respuesta
+                if (response.ok) {                        
+                    return response.json(); // Parseamos la respuesta JSON
+                } else {                        
+                    // Si hubo un error, lanzar explícitamente una excepción
+                    // para ser "catcheada" más adelante
+                    console.log('Error al enviar la solicitud para agregar producto:', error);
+                    throw new Error('Error al agregar el producto.');
+                }
+            })
+            .then(function (data) {
+                alert('Producto agregado correctamente.');
+                //Limpiamos el formulario.
+                document.getElementById('codigo').value = "";
+                document.getElementById('plataforma').value = "";
+                document.getElementById('descripcion').value = "";
+                document.getElementById('cantidad').value = "";
+                document.getElementById('precio').value = "";
+                document.getElementById('foto').value = "";
 
-                    // Redirigimos a la página de listado de productos
-                    window.location.href = "listadoFoto.html";
-                })
-                .catch(function (error) {
-                    // Código para manejar errores
-                    alert('Error al agregar el producto.');
-                });
+                // Redirigimos a la página de listado de productos
+                window.location.href = "listadoFoto.html";
+            })
+            .catch(function (error) {
+                // Código para manejar errores
+                alert('Error al agregar el producto.');
+            });
         })
     </script>
     <script src="js/custom.js"></script>

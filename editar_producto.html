@@ -6,113 +6,131 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Producto</title>
     <script src="https://unpkg.com/vue@next"></script>
+    <link rel="stylesheet" href="css/estilos.css">
+    <script src="js/custom.js"></script>
+    <script src="js/particles.min.js"></script>
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 </head>
+<div id="particles-js"></div>
 <body>
     <div id="app">
-        <h1>Editar Producto</h1>
-        <form @submit.prevent="editarProducto" enctype="multipart/form-data">
+        <div class="logoTitle">
+            <h1 class="titulo">TPO FINAL</h1> 
+            <img src="img/logo_codo.png" alt="codoacodo" width="100px">        
+        </div>
+        <h1 class="slogan">Editar Producto</h1>
+        <form @submit.prevent="editarProducto" class="caja mrg-bottom" enctype="multipart/form-data">
             <div>
-                <label for="plataforma">Plataforma:</label>
-                <input type="text" id="plataforma" v-model="plataforma" required>
+                <label class="modif-label" for="plataformaModificar">Plataforma:</label>
+                <input type="text" id="plataformaModificar" v-model="plataforma" required>
             </div>
             <div>
-                <label for="descripcion">Descripción:</label>
-                <input type="text" id="descripcion" v-model="descripcion" required>
+                <label class="modif-label" for="descripcionModificar">Descripción:</label>
+                <input type="text" id="descripcionModificar" v-model="descripcion" required>
             </div>
             <div>
-                <label for="cantidad">Cantidad:</label>
-                <input type="number" id="cantidad" v-model="cantidad" required>
+                <label class="modif-label" for="cantidadModificar">Cantidad:</label>
+                <input type="number" id="cantidadModificar" v-model="cantidad" required>
             </div>
             <div>
-                <label for="precio">Precio:</label>
-                <input type="number" id="precio" v-model="precio" required>
+                <label class="modif-label" for="precioModificar">Precio:</label>
+                <input class="modif-label" type="number" id="precioModificar" v-model="precio" required>
             </div>
-            <div>
-                <label for="foto">Foto:</label>
-                <input type="file" id="foto" @change="cargarFoto">
+            <div class="mb-5 mt-4">
+                <label class=" file-label" for="fotoModificar">Foto:</label>
+                <span class="btn-span" id="file-label-text">Seleccionar archivo</span>
+                <input type="file" id="fotoModificar" class="file-input" @change="cargarFoto">
             </div>
             <button type="submit">Guardar</button>
+            <a href="index.html" class="btn-grad ">Menu principal</a>
         </form>
     </div>
+
+    <!-- script para estilo de boton submit -->
 
     <script>
         const URL = "https://pieroja.pythonanywhere.com/";
 
         const app = Vue.createApp({
-    data() {
-        return {
-            codigo: null,
-            plataforma: '',
-            descripcion: '',
-            cantidad: 0,
-            precio: 0,
-            foto: null  // Agrega la propiedad 'foto' para almacenar el archivo seleccionado
-        }
-    },
-    methods: {
-        editarProducto() {
-            const formData = new FormData();
-
-            formData.append('plataforma', this.plataforma);
-            formData.append('descripcion', this.descripcion);
-            formData.append('cantidad', this.cantidad);
-            formData.append('precio', this.precio);
-
-            // Agregar la foto solo si se ha seleccionado un archivo
-            if (this.foto) {
-                formData.append('foto', this.foto);
-            }
-
-            // Realizar una solicitud PUT al servidor para guardar los cambios del producto
-            fetch(URL + `productos/${this.codigo}`, {
-                method: 'PUT',
-                body: formData
-            })
-            .then(response => {
-                if (response.ok) {
-                    alert('Producto editado correctamente.');
-                    // Redirigir de vuelta a la página de listado de productos
-                    window.location.href = 'listadoFoto.html';
-                } else {
-                    throw new Error('Error al editar el producto.');
+            data() {
+                return {
+                    codigo: null,
+                    plataforma: '',
+                    descripcion: '',
+                    cantidad: 0,
+                    precio: 0,
+                    foto: null
                 }
-            })
-            .catch(error => {
-                console.log('Error:', error);
-                alert('Error al editar el producto.');
-            });
-        },
-        obtenerProducto() {
-            // Obtener el código del producto
-            const urlParams = new URLSearchParams(window.location.search);
-            this.codigo = urlParams.get('codigo');
+            },
+            methods: {
+                editarProducto() {
+                    const formData = new FormData();
 
-            // Realizar una petición HTTP para obtener el producto por su código
-            fetch(URL + `productos/${this.codigo}`)
-            .then(response => response.json())
-            .then(data => {
-                // Asigna los datos del producto a las variables correspondientes
-                this.plataforma = data.plataforma;
-                this.descripcion = data.descripcion;
-                this.cantidad = data.cantidad;
-                this.precio = data.precio;
-            })
-            .catch(error => {
-                console.error(error);
-            });
-        },
-        cargarFoto(event) {
-            const file = event.target.files[0];
-            this.foto = file;
-        }
-    },
-    mounted() {
-        // Al cargar la página, obtenemos los datos del producto
-        this.obtenerProducto();
-    }
-});
+                    formData.append('plataformaModificar', this.plataforma);
+                    formData.append('descripcionModificar', this.descripcion);
+                    formData.append('cantidadModificar', this.cantidad);
+                    formData.append('precioModificar', this.precio);
 
-app.mount('#app');
-    </script>    
+                    if (this.foto) {
+                        formData.append('fotoModificar', this.foto);
+                    }
+
+                    fetch(URL + `productos/${this.codigo}`, {
+                        method: 'PUT',
+                        body: formData
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            alert('Producto editado correctamente.');
+                            window.location.href = 'listadoFoto.html';
+                        } else {
+                            throw new Error('Error al editar el producto.');
+                        }
+                    })
+                    .catch(error => {
+                        console.log('Error:', error);
+                        alert('Error al editar el producto.');
+                    });
+                },
+                obtenerProducto() {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    this.codigo = urlParams.get('codigo');
+
+                    fetch(URL + `productos/${this.codigo}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        this.codigo = data.codigo;
+                        this.plataforma = data.plataforma;
+                        this.descripcion = data.descripcion;
+                        this.cantidad = data.cantidad;
+                        this.precio = data.precio;
+                        this.foto = data.foto;
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+                },
+                cargarFoto(event) {
+                    const file = event.target.files[0];
+                    this.foto = file;                  
+                    const fileLabelText = document.getElementById('file-label-text');
+                    if (file) {
+                        fileLabelText.textContent = file.name;
+                    } else {
+                        fileLabelText.textContent = 'Seleccionar archivo';
+                    }
+
+                }
+            },
+            mounted() {
+                this.obtenerProducto();
+            }
+        });
+
+        app.mount('#app');
+    </script>
+    <script src="js/custom.js"></script>
+    <script src="js/particles.min.js"></script>
 </body>
 </html>

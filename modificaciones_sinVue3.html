@@ -34,7 +34,7 @@
     <div id="datosProducto" style="display: none;">
         <h2 class="slogan">Datos del Producto</h2>
        
-        <form id="formularioModificar" class="caja" enctype="multipart/form-data">
+        <form id="formularioModificar" class="caja mrg-bottom" enctype="multipart/form-data">
             <label class="modif-label" for="plataformaModificar">Plataforma:</label>            
             <input type="text" id="plataformaModificar" name="plataformaModificar" required><br>
 
@@ -114,8 +114,9 @@
                     document.getElementById('precioModificar').value = data.precio;
                     // document.getElementById('fotoModificar').value = data.foto;
                     
-                   
-                    
+                    // Mostramos el formulario de modificación y ocultamos el formulario de consulta
+                    document.getElementById('formulario').style.display = 'none';
+                    document.getElementById('datosProducto').style.display = 'block';
                 })
                 .catch(function (error) {
                     // Código para manejar errores
@@ -161,8 +162,8 @@
             } else {
                 // Si hubo un error en la modificación
                 // Mostrar la alerta de error
-                document.getElementById('alerta').textContent = 'Error al modificar el producto.';
-                document.getElementById('alerta').style.display = 'block';
+                console.log('Error al  modificar el producto:', error);
+                alert('Error al modificar el producto.');
             }
         })
         .catch(function (error) {

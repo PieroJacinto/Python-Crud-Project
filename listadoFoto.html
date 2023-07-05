@@ -37,7 +37,8 @@
             </div>
             <div class="btn-card">
                 <!-- <a :href="'editar_producto.html?codigo=' + producto.codigo" class="btn-editar">Editar</a> -->
-                <a href="modificaciones_sinVue3.html"class="btn-editar">Editar</a>
+                <!-- <a href="editar_producto.html"class="btn-editar">Editar</a> -->
+                <a :href="'editar_producto.html?codigo=' + producto.codigo" class="btn-editar">Editar</a>
 
               <button @click="eliminarProducto(producto.codigo)" class="btn-eliminar">Eliminar</button>
             </div>
@@ -46,11 +47,41 @@
     </div>
 
 
-    <div class="contenedor-centrado" >
+    <div class="contenedor-centrado mrg-bottom" >
         <a href="index.html" class="btn-grad">Menu principal</a>
     </div>
 
     <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        const URL2 = "https://pieroja.pythonanywhere.com/";
+
+        // Obtener el código del producto de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const codigoProducto = urlParams.get('codigo');
+
+        // Verificar si el parámetro "codigo" está presente en la URL
+        if (codigoProducto) {
+        // Obtener la información completa del producto
+        fetch(URL2 + 'productos/' + codigoProducto)
+            .then(response => {
+            if (response.ok) {
+                return response.json(); // Parsear la respuesta JSON
+            } else {
+                throw new Error('Error al obtener la información del producto.');
+            }
+            })
+            .then(data => {
+            // Hacer algo con la información del producto obtenida
+            console.log('Información del producto:', data);
+            // Aquí puedes utilizar los datos del producto para llenar los campos del formulario de edición
+            })
+            .catch(error => {
+            console.error('Error:', error);
+            alert('Error al obtener la información del producto.');
+            });
+        }
+
+    </script>
     <script>
         //const URL = "http://127.0.0.1:5000/"
         const URL = "https://pieroja.pythonanywhere.com/"
