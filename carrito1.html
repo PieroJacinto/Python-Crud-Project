@@ -35,7 +35,7 @@
           <td>{{ producto.codigo }}</td>
           <td>{{ producto.descripcion }}</td>
           <td>{{ producto.cantidad }}</td>
-          <td>{{ producto.precio }}</td>         
+          <td>${{ producto.precio }}</td>         
           <td>
             <button class="btn-suma" @click="agregarAlCarrito(producto)">&nbsp;&nbsp;<b>+</b>&nbsp;&nbsp;</button>
             <input class="btn-carrito" type="number" v-model="producto.cantidadModificar" min="1" step="1" style="width: 50px;">
@@ -62,8 +62,8 @@
             <td>{{ item.codigo }}</td>
             <td>{{ item.descripcion }}</td>
             <td >{{ item.cantidad }}</td>
-            <td >{{ item.precio }}</td>
-            <td >{{ item.precio * item.cantidad }}</td>            
+            <td >${{ item.precio }}</td>
+            <td >${{ item.precio * item.cantidad }}</td>            
           </tr>
         </tbody>
       </table>
